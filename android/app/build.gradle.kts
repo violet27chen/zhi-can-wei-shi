@@ -5,8 +5,10 @@ plugins {
 }
 
 // 正式签名：CI 环境通过环境变量注入 keystore（GitHub Secrets）
-val ksPath: String? = System.getenv("KEYSTORE_PATH")
-val hasKeystore: Boolean = !ksPath.isNullOrBlank() && File(ksPath).exists()
+val ksFile: File? = System.getenv("KEYSTORE_PATH")
+    ?.takeIf { it.isNotBlank() }
+    ?.let { File(it) }
+    ?.takeIf { it.exists() }
 
 android {
     namespace = "site.sc27c.zhican"
@@ -20,10 +22,11 @@ android {
         versionName = "1.0.1"
     }
 
-    if (hasKeystore) {
+    val kf = ksFile
+    if (kf != null) {
         signingConfigs {
             create("release") {
-                storeFile = file(ksPath)
+                storeFile = kf
                 storePassword = System.getenv("KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("KEY_ALIAS")
                 keyPassword = System.getenv("KEYSTORE_PASSWORD")
@@ -34,7 +37,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            if (hasKeystore) signingConfig = signingConfigs.getByName("release")
+            if (kf != null) signingConfig = signingConfigs.getByName("release")
         }
     }
 

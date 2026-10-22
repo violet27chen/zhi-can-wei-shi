@@ -20,6 +20,8 @@ jobs:
           java-version: '17'
 
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9' # 与 AGP 8.5 匹配，runner 自带的 Gradle 9 不兼容
 
       - name: Restore signing keystore
         run: echo "${{ secrets.ANDROID_KEYSTORE_B64 }}" | base64 -d > /home/runner/zhi-can-release.jks
