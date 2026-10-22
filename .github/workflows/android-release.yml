@@ -5,6 +5,9 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
+permissions:
+  contents: write # 创建 Release 并上传 APK
+
 jobs:
   build:
     runs-on: ubuntu-latest
