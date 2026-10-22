@@ -2,6 +2,7 @@
 .env
 *.key
 *.keystore
+*.jks
 
 # 本地运行产物与依赖
 node_modules/
