@@ -1,0 +1,13 @@
+{
+  "name": "zhi-can-wei-shi",
+  "version": "2.0.0",
+  "description": "智蚕卫士——蚕病防控与蚕丝品质提升监测系统（EdgeOne Makers 全栈版，DeepSeek 真实大模型研判）",
+  "type": "module",
+  "scripts": {
+    "dev": "edgeone makers dev",
+    "test": "node test/risk-engine.test.js"
+  },
+  "dependencies": {
+    "@edgeone/pages-blob": "^0.0.14"
+  }
+}

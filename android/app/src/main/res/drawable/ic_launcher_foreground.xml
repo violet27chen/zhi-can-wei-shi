@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 前景图标：桑叶剪影（居中 66dp 安全区内） -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#3E8E5A"
+        android:pathData="M54,30 C70,34 78,46 76,60 C74,74 62,80 54,78 C46,80 34,74 32,60 C30,46 38,34 54,30 Z" />
+    <path
+        android:strokeColor="#F3F7F4"
+        android:strokeWidth="2.5"
+        android:fillColor="#00000000"
+        android:pathData="M54,34 L54,74 M54,44 C48,46 44,50 42,56 M54,44 C60,46 64,50 66,56 M54,58 C49,60 46,63 45,68 M54,58 C59,60 62,63 63,68" />
+</vector>

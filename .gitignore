@@ -1,0 +1,19 @@
+# 密钥与环境（严禁提交）
+.env
+*.key
+*.keystore
+
+# 本地运行产物与依赖
+node_modules/
+data/
+.edgeone/
+.taste-skill/
+*.zip
+
+# Android 构建
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+zhi-can-wei-shi/

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智蚕卫士 · 蚕病防控监测</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cellipse cx='16' cy='17' rx='10' ry='13' fill='%232e6b3e'/%3E%3Cpath d='M10 22c4-2 8-2 12 0M10 26c4-2 8-2 12 0' stroke='%23f3f7f4' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="frame">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="close-row"><button class="btn ghost" id="menu-close" aria-label="关闭菜单">关闭</button></div>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <ellipse cx="16" cy="17" rx="10" ry="13" fill="var(--accent)"/>
+        <path d="M10 22c4-2 8-2 12 0M10 26c4-2 8-2 12 0" stroke="#f3f7f4" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <span class="brand-name">智蚕卫士</span>
+        <span class="brand-scope">蚕病防控 · 品质提升</span>
+      </div>
+    </div>
+    <p class="group-label">监测</p>
+    <nav aria-label="主导航">
+      <a class="nav-item" href="#overview" data-view="overview" aria-current="page">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path d="M2 8.7 6 12l8-8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        监测总览
+      </a>
+      <a class="nav-item" href="#records" data-view="records">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 2.5h7.5L13 5v8.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M5.5 7.5h5M5.5 10.5h5" stroke-width="1.5" stroke-linecap="round"/></svg>
+        记录与知识库
+      </a>
+    </nav>
+    <div class="bottom">
+      龄期标准：<br>
+      孵化~2龄 26–28℃ · 85–90%<br>
+      3龄 28℃ 左右 · 80% 左右<br>
+      4龄 24–26℃ · 70–75%<br>
+      5龄 22–24℃ · 70–75%
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="btn ghost menu-toggle" id="menu-open" aria-label="打开菜单">菜单</button>
+        <span class="scope">共育室 · <span id="scope-count">4</span> 个蚕房</span>
+      </div>
+      <span class="stamp">最近更新 <span id="stamp-time">—</span></span>
+    </div>
+
+    <div class="sheet">
+      <div class="canvas">
+
+        <!-- ================= 监测总览 ================= -->
+        <div class="view" id="view-overview">
+          <div class="title-row">
+            <div>
+              <h1>监测总览</h1>
+              <p class="sub" id="finding-line">正在载入区域状态…</p>
+            </div>
+            <div class="actions">
+              <button class="btn" id="btn-refresh" type="button">刷新</button>
+            </div>
+          </div>
+
+          <div class="kpis" id="kpis">
+            <div class="kpi"><div class="kpi-label">A 级高危区域</div><div class="kpi-value" id="kpi-a">—</div></div>
+            <div class="kpi"><div class="kpi-label">C 级疑似区域</div><div class="kpi-value" id="kpi-c">—</div></div>
+            <div class="kpi"><div class="kpi-label">B 级正常区域</div><div class="kpi-value" id="kpi-b">—</div></div>
+            <div class="kpi"><div class="kpi-label">今日消毒完成</div><div class="kpi-value" id="kpi-dis">—</div></div>
+          </div>
+
+          <div class="grid top" style="margin-bottom:var(--gap)">
+            <section class="panel col-8">
+              <header>
+                <h2>分区状态板</h2>
+                <span class="meta">点击区域填入录入表单</span>
+              </header>
+              <div class="zone-board" id="zone-board"></div>
+              <p class="zone-footnote">发现异常时，利用影像判断进行分区划定，缩小人工排查范围；查找范围务必锁定到区，防止病害扩大。</p>
+            </section>
+
+            <section class="panel col-4">
+              <header>
+                <h2>监测数据录入</h2>
+                <span class="meta">模拟数据</span>
+              </header>
+              <form class="form" id="assess-form">
+                <div class="form-row">
+                  <div class="field">
+                    <label for="f-region">区域</label>
+                    <select class="input" id="f-region" name="region"></select>
+                  </div>
+                  <div class="field">
+                    <label for="f-stage">蚕龄</label>
+                    <select class="input" id="f-stage" name="stage"></select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label for="f-temp">温度（℃）</label>
+                    <input class="input num" id="f-temp" name="temp" type="number" step="0.1" min="0" max="45" placeholder="如 26.4">
+                  </div>
+                  <div class="field">
+                    <label for="f-humidity">湿度（%）</label>
+                    <input class="input num" id="f-humidity" name="humidity" type="number" step="1" min="0" max="100" placeholder="如 72">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label for="f-vent">通风状况</label>
+                    <select class="input" id="f-vent" name="ventilation"></select>
+                  </div>
+                  <div class="field">
+                    <label for="f-mulberry">桑叶状态</label>
+                    <select class="input" id="f-mulberry" name="mulberry"></select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>影像识别 · 蚕体与茧质</label>
+                  <div class="checks" id="f-signs"></div>
+                </div>
+                <div class="switch-row">
+                  <input class="switch" type="checkbox" id="f-disinfected" checked>
+                  <label for="f-disinfected" style="font-weight:500">今日已完成 AI 消毒打卡</label>
+                </div>
+                <div class="field">
+                  <label for="f-feedback">人工反馈（疑似异常点）</label>
+                  <textarea class="input" id="f-feedback" name="feedback" placeholder="现场人员观察到的异常，可留空"></textarea>
+                </div>
+                <button class="btn primary" type="submit" id="btn-assess">提交研判</button>
+              </form>
+            </section>
+          </div>
+
+          <div class="grid top">
+            <section class="panel col-8">
+              <header>
+                <h2>研判结论</h2>
+                <span class="meta" id="verdict-meta">四段式输出</span>
+              </header>
+              <div id="verdict-body">
+                <div class="empty verdict-empty">
+                  <p>提交一次监测数据后，四段式研判将在此依次显示：</p>
+                  <ol>
+                    <li><b>数据接收与状态评估</b>：对比标准阈值逐项核对</li>
+                    <li><b>风险定级与分区</b>：A 高危 / B 正常 / C 疑似</li>
+                    <li><b>智能预警与指令</b>：环境干预、作业指令、分区隔离</li>
+                    <li><b>知识库沉淀</b>：一句话总结与数据标签</li>
+                  </ol>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel col-4">
+              <header>
+                <h2>近期预警</h2>
+                <button class="card-link btn ghost" id="btn-goto-records" type="button" style="height:24px;padding:0 4px">全部记录</button>
+              </header>
+              <div id="alerts-list"></div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ================= 记录与知识库 ================= -->
+        <div class="view" id="view-records" hidden>
+          <div class="title-row">
+            <div>
+              <h1>记录与知识库</h1>
+              <p class="sub">每次研判自动沉淀，共 <strong id="records-total">0</strong> 条记录</p>
+            </div>
+            <div class="actions">
+              <button class="btn" id="btn-refresh-records" type="button">刷新</button>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist">
+            <button role="tab" id="tab-records" aria-selected="true">评估记录</button>
+            <button role="tab" id="tab-knowledge" aria-selected="false">知识库沉淀</button>
+          </div>
+
+          <section class="panel" id="records-panel">
+            <div class="table-wrap">
+              <table class="records-table">
+                <thead>
+                  <tr>
+                    <th>时间</th><th>区域</th><th>蚕龄</th><th>研判</th>
+                    <th class="n">温度</th><th class="n">湿度</th><th>通风</th><th>知识库标签</th>
+                  </tr>
+                </thead>
+                <tbody id="records-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" id="knowledge-panel" hidden>
+            <div class="kb-tools">
+              <div class="kb-upload">
+                <span class="kb-tools-label">手动上传资料</span>
+                <span class="meta">支持 PDF · DOC · DOCX · XLS · XLSX · CSV · TXT · MD · JSON，≤5MB</span>
+                <div class="upload-row">
+                  <input type="file" id="kb-file" class="input file-input">
+                  <button class="btn" id="btn-upload" type="button">上传</button>
+                </div>
+              </div>
+              <div class="kb-backup">
+                <span class="kb-tools-label">数据备份</span>
+                <span class="meta">导出评估记录、区域与知识库索引为 JSON；导入备份将覆盖现有数据</span>
+                <div class="upload-row">
+                  <a class="btn" id="btn-backup" href="/api/backup" download>导出备份</a>
+                  <input type="file" id="restore-file" class="input file-input" accept=".json">
+                  <button class="btn" id="btn-restore" type="button">导入备份</button>
+                </div>
+              </div>
+            </div>
+            <div class="kb-files" id="kb-files"></div>
+            <div class="kb-item" style="margin-top:14px">
+              <div class="kb-head">
+                <span class="pill neutral">COZE</span>
+                <b>扣子平台知识库</b>
+                <span id="coze-status" style="margin-left:auto;font-size:12px">加载中…</span>
+              </div>
+              <div id="coze-docs" style="margin-top:8px"></div>
+            </div>
+            <div class="kb-list" id="knowledge-list"></div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
